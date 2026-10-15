@@ -274,7 +274,6 @@ export function getDefaultSeverity(
 
   switch (parameterCode) {
     case 'SYSTOLIC_BLOOD_PRESSURE':
-      return gapType === 'MISSING_DATA' ? 'HIGH' : 'HIGH';
     case 'FASTING_BLOOD_GLUCOSE':
       return 'HIGH';
     case 'BODY_MASS_INDEX':
@@ -282,7 +281,5 @@ export function getDefaultSeverity(
     case 'TOTAL_CHOLESTEROL':
     case 'SMOKING_STATUS_ASSESSMENT':
       return 'MEDIUM';
-    default:
-      return 'LOW';
   }
 }
