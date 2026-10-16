@@ -35,16 +35,46 @@ export interface LlmClientConfig {
 }
 
 /**
+ * Resolves the completion timeout from the environment: LLM_TIMEOUT_MS (ms)
+ * or AI_TIMEOUT_SECONDS (seconds). Falls back to the 8 s default; invalid
+ * values are ignored rather than crashing the engine.
+ */
+export function resolveTimeoutFromEnv(): number {
+  const msRaw = process.env['LLM_TIMEOUT_MS'];
+  if (msRaw) {
+    const parsed = Number.parseInt(msRaw, 10);
+    if (Number.isFinite(parsed) && parsed >= 1000 && parsed <= 120000) {
+      return parsed;
+    }
+  }
+  const secondsRaw = process.env['AI_TIMEOUT_SECONDS'];
+  if (secondsRaw) {
+    const parsed = Number.parseInt(secondsRaw, 10);
+    if (Number.isFinite(parsed) && parsed >= 1 && parsed <= 120) {
+      return parsed * 1000;
+    }
+  }
+  return DEFAULT_LLM_TIMEOUT_MS;
+}
+
+/**
  * Default HTTP transport for OpenAI-compatible chat completion endpoints.
- * Configuration is read from environment: LLM_API_BASE_URL, LLM_API_KEY, LLM_MODEL.
+ * Configuration is read from environment: LLM_API_BASE_URL / LLM_API_KEY /
+ * LLM_MODEL, with AI_API_BASE_URL / AI_API_KEY / AI_MODEL as aliases.
  * When no base URL is configured, the transport fails fast so the engine can
  * fail over to the safe deterministic fallback template.
  */
 export function createDefaultLlmTransport(
-  baseUrl: string = process.env['LLM_API_BASE_URL'] ?? '',
-  apiKey: string = process.env['LLM_API_KEY'] ?? '',
-  model: string = process.env['LLM_MODEL'] ?? 'gpt-4o-mini'
+  baseUrl: string = process.env['LLM_API_BASE_URL'] ?? process.env['AI_API_BASE_URL'] ?? '',
+  apiKey: string = process.env['LLM_API_KEY'] ?? process.env['AI_API_KEY'] ?? '',
+  model: string = process.env['LLM_MODEL'] ?? process.env['AI_MODEL'] ?? 'gpt-4o-mini'
 ): LlmTransport {
+  // Optional reasoning-effort control (LLM_REASONING_EFFORT / AI_REASONING_EFFORT).
+  // Some proxies/models reject requests that leave it at the upstream default
+  // (e.g. 'minimal'); setting e.g. 'low' fixes those. Only sent when set.
+  const reasoningEffort =
+    process.env['LLM_REASONING_EFFORT'] ?? process.env['AI_REASONING_EFFORT'] ?? '';
+
   return async (request, signal) => {
     if (!baseUrl) {
       throw new UpstreamServiceError({
@@ -64,6 +94,7 @@ export function createDefaultLlmTransport(
       body: JSON.stringify({
         model,
         response_format: { type: 'json_object' },
+        ...(reasoningEffort ? { reasoning_effort: reasoningEffort } : {}),
         messages: [
           { role: 'system', content: request.systemPrompt },
           { role: 'user', content: request.userPrompt },
@@ -150,7 +181,8 @@ export function extractJsonContent(rawText: string): Record<string, unknown> {
 
 /**
  * Timeout-guarded LLM client. Every call runs under an AbortController with a
- * hard 8-second deadline; transport failures are normalized into RFC 7807
+ * hard deadline (default 8 s, configurable via LLM_TIMEOUT_MS or
+ * AI_TIMEOUT_SECONDS); transport failures are normalized into RFC 7807
  * UpstreamServiceError so the engine can fail over deterministically.
  */
 export class LlmClient {
@@ -160,7 +192,7 @@ export class LlmClient {
 
   constructor(config?: LlmClientConfig) {
     this.transport = config?.transport ?? createDefaultLlmTransport();
-    this.timeoutMs = config?.timeoutMs ?? DEFAULT_LLM_TIMEOUT_MS;
+    this.timeoutMs = config?.timeoutMs ?? resolveTimeoutFromEnv();
     this.providerName = config?.providerName ?? DEFAULT_LLM_PROVIDER_NAME;
   }
 
