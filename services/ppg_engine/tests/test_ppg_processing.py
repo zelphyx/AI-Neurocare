@@ -79,11 +79,12 @@ def test_tc_ppg_002_excessive_motion_rejection():
 
 
 # =============================================================================
-# TC-PPG-003: SQI gate boundary — SQI < 0.60 is a hard rejection
+# TC-PPG-003: SQI gate boundary — SQI below the rejection threshold is a hard
+# rejection (threshold calibrated on the BUT PPG real dataset, MOD-04)
 # =============================================================================
 
 def test_tc_ppg_003_sqi_threshold_is_absolute():
-    assert SQI_REJECTION_THRESHOLD == 0.60
+    assert SQI_REJECTION_THRESHOLD == 0.45
     good = process_array(synth_ppg(80.0, noise_std=0.005, seed=3))
     assert good["sqi"] >= SQI_REJECTION_THRESHOLD
     assert good["status"] == "PROCESSED"

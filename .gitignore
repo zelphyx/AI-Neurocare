@@ -47,3 +47,9 @@ venv/
 docs/prd/
 docs/
 
+
+# Benchmark datasets (downloaded PhysioNet data — regenerable, not for VCS)
+services/ppg_engine/benchmark/data/
+
+# Documentation markdown (kept local, distributed out-of-band)
+*.md

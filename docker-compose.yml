@@ -1,0 +1,29 @@
+name: ai-neurocare
+
+services:
+  gateway:
+    build: .
+    image: ai-neurocare-gateway:latest
+    ports:
+      - "${GATEWAY_PORT:-8080}:8080"
+    environment:
+      GATEWAY_PORT: "8080"
+      # Auth: comma-separated API keys. Leave unset for open dev mode.
+      GATEWAY_API_KEYS: "${GATEWAY_API_KEYS:-}"
+      # LLM provider (OpenAI-compatible). Unset => deterministic fallback.
+      LLM_API_BASE_URL: "${LLM_API_BASE_URL:-}"
+      LLM_API_KEY: "${LLM_API_KEY:-}"
+      LLM_MODEL: "${LLM_MODEL:-}"
+      # PPG microservice (service-to-service, internal network)
+      PPG_ENGINE_BASE_URL: "http://ppg-engine:8001"
+    depends_on:
+      ppg-engine:
+        condition: service_healthy
+    restart: unless-stopped
+
+  ppg-engine:
+    build: ./services/ppg_engine
+    image: ai-neurocare-ppg-engine:latest
+    ports:
+      - "${PPG_ENGINE_PORT:-8001}:8001"
+    restart: unless-stopped

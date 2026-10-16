@@ -1,0 +1,303 @@
+{
+  "generated_at": "2026-10-16T07:25:54.614137+00:00",
+  "dataset": "BUT PPG v1.0.0 (PhysioNet)",
+  "window_seconds": 10.0,
+  "records": [
+    {
+      "subject": "100001",
+      "reference_hr": 83.0,
+      "windows": 1,
+      "accepted_windows": 0,
+      "mae_bpm": null,
+      "estimated_hr_median": null
+    },
+    {
+      "subject": "100002",
+      "reference_hr": 85.0,
+      "windows": 1,
+      "accepted_windows": 1,
+      "mae_bpm": 3.18,
+      "estimated_hr_median": 81.82
+    },
+    {
+      "subject": "100003",
+      "reference_hr": 81.0,
+      "windows": 1,
+      "accepted_windows": 1,
+      "mae_bpm": 0.82,
+      "estimated_hr_median": 81.82
+    },
+    {
+      "subject": "101001",
+      "reference_hr": 67.0,
+      "windows": 1,
+      "accepted_windows": 1,
+      "mae_bpm": 0.33,
+      "estimated_hr_median": 66.67
+    },
+    {
+      "subject": "101002",
+      "reference_hr": 69.0,
+      "windows": 1,
+      "accepted_windows": 1,
+      "mae_bpm": 0.23,
+      "estimated_hr_median": 69.23
+    },
+    {
+      "subject": "101003",
+      "reference_hr": 71.0,
+      "windows": 1,
+      "accepted_windows": 1,
+      "mae_bpm": 1.0,
+      "estimated_hr_median": 72.0
+    },
+    {
+      "subject": "102001",
+      "reference_hr": 68.0,
+      "windows": 1,
+      "accepted_windows": 1,
+      "mae_bpm": 1.23,
+      "estimated_hr_median": 69.23
+    },
+    {
+      "subject": "102002",
+      "reference_hr": 66.0,
+      "windows": 1,
+      "accepted_windows": 1,
+      "mae_bpm": 0.67,
+      "estimated_hr_median": 66.67
+    },
+    {
+      "subject": "102003",
+      "reference_hr": 67.0,
+      "windows": 1,
+      "accepted_windows": 1,
+      "mae_bpm": 0.33,
+      "estimated_hr_median": 66.67
+    },
+    {
+      "subject": "102004",
+      "reference_hr": 66.0,
+      "windows": 1,
+      "accepted_windows": 0,
+      "mae_bpm": null,
+      "estimated_hr_median": null
+    },
+    {
+      "subject": "103002",
+      "reference_hr": 91.0,
+      "windows": 1,
+      "accepted_windows": 1,
+      "mae_bpm": 1.0,
+      "estimated_hr_median": 90.0
+    },
+    {
+      "subject": "103003",
+      "reference_hr": 100.0,
+      "windows": 1,
+      "accepted_windows": 0,
+      "mae_bpm": null,
+      "estimated_hr_median": null
+    },
+    {
+      "subject": "104001",
+      "reference_hr": 108.0,
+      "windows": 1,
+      "accepted_windows": 0,
+      "mae_bpm": null,
+      "estimated_hr_median": null
+    },
+    {
+      "subject": "104002",
+      "reference_hr": 122.0,
+      "windows": 1,
+      "accepted_windows": 0,
+      "mae_bpm": null,
+      "estimated_hr_median": null
+    },
+    {
+      "subject": "104003",
+      "reference_hr": 115.0,
+      "windows": 1,
+      "accepted_windows": 0,
+      "mae_bpm": null,
+      "estimated_hr_median": null
+    },
+    {
+      "subject": "105001",
+      "reference_hr": 86.0,
+      "windows": 1,
+      "accepted_windows": 0,
+      "mae_bpm": null,
+      "estimated_hr_median": null
+    },
+    {
+      "subject": "105002",
+      "reference_hr": 91.0,
+      "windows": 1,
+      "accepted_windows": 1,
+      "mae_bpm": 3.74,
+      "estimated_hr_median": 94.74
+    },
+    {
+      "subject": "105003",
+      "reference_hr": 81.0,
+      "windows": 1,
+      "accepted_windows": 0,
+      "mae_bpm": null,
+      "estimated_hr_median": null
+    },
+    {
+      "subject": "106001",
+      "reference_hr": 63.0,
+      "windows": 1,
+      "accepted_windows": 1,
+      "mae_bpm": 1.29,
+      "estimated_hr_median": 64.29
+    },
+    {
+      "subject": "106002",
+      "reference_hr": 67.0,
+      "windows": 1,
+      "accepted_windows": 1,
+      "mae_bpm": 2.23,
+      "estimated_hr_median": 69.23
+    },
+    {
+      "subject": "106003",
+      "reference_hr": 65.0,
+      "windows": 1,
+      "accepted_windows": 1,
+      "mae_bpm": 0.45,
+      "estimated_hr_median": 65.45
+    },
+    {
+      "subject": "107001",
+      "reference_hr": 75.0,
+      "windows": 1,
+      "accepted_windows": 1,
+      "mae_bpm": 0.0,
+      "estimated_hr_median": 75.0
+    },
+    {
+      "subject": "107002",
+      "reference_hr": 104.0,
+      "windows": 1,
+      "accepted_windows": 0,
+      "mae_bpm": null,
+      "estimated_hr_median": null
+    },
+    {
+      "subject": "107003",
+      "reference_hr": 106.0,
+      "windows": 1,
+      "accepted_windows": 1,
+      "mae_bpm": 0.12,
+      "estimated_hr_median": 105.88
+    },
+    {
+      "subject": "108001",
+      "reference_hr": 73.0,
+      "windows": 1,
+      "accepted_windows": 1,
+      "mae_bpm": 2.0,
+      "estimated_hr_median": 75.0
+    },
+    {
+      "subject": "108002",
+      "reference_hr": 76.0,
+      "windows": 1,
+      "accepted_windows": 1,
+      "mae_bpm": 1.0,
+      "estimated_hr_median": 75.0
+    },
+    {
+      "subject": "108003",
+      "reference_hr": 75.0,
+      "windows": 1,
+      "accepted_windows": 0,
+      "mae_bpm": null,
+      "estimated_hr_median": null
+    },
+    {
+      "subject": "109001",
+      "reference_hr": 82.0,
+      "windows": 1,
+      "accepted_windows": 1,
+      "mae_bpm": 0.18,
+      "estimated_hr_median": 81.82
+    },
+    {
+      "subject": "109002",
+      "reference_hr": 84.0,
+      "windows": 1,
+      "accepted_windows": 1,
+      "mae_bpm": 0.28,
+      "estimated_hr_median": 83.72
+    },
+    {
+      "subject": "109003",
+      "reference_hr": 78.0,
+      "windows": 1,
+      "accepted_windows": 1,
+      "mae_bpm": 1.4,
+      "estimated_hr_median": 76.6
+    },
+    {
+      "subject": "110001",
+      "reference_hr": 96.0,
+      "windows": 1,
+      "accepted_windows": 1,
+      "mae_bpm": 1.26,
+      "estimated_hr_median": 94.74
+    },
+    {
+      "subject": "110002",
+      "reference_hr": 98.0,
+      "windows": 1,
+      "accepted_windows": 0,
+      "mae_bpm": null,
+      "estimated_hr_median": null
+    },
+    {
+      "subject": "110003",
+      "reference_hr": 96.0,
+      "windows": 1,
+      "accepted_windows": 1,
+      "mae_bpm": 1.26,
+      "estimated_hr_median": 94.74
+    },
+    {
+      "subject": "111001",
+      "reference_hr": 100.0,
+      "windows": 1,
+      "accepted_windows": 1,
+      "mae_bpm": 0.0,
+      "estimated_hr_median": 100.0
+    },
+    {
+      "subject": "111002",
+      "reference_hr": 95.0,
+      "windows": 1,
+      "accepted_windows": 1,
+      "mae_bpm": 0.26,
+      "estimated_hr_median": 94.74
+    }
+  ],
+  "low_quality_clip_outcomes": {
+    "REJECTED": 12,
+    "PROCESSED": 1
+  },
+  "summary": {
+    "total_windows": 35,
+    "accepted_windows": 24,
+    "coverage_percent": 68.57,
+    "mae_bpm": 1.011,
+    "p90_error_bpm": 2.161,
+    "rejection_reasons": {
+      "EXCESSIVE_MOTION": 11
+    },
+    "prd_target_mae_bpm": 5.0,
+    "pass": true
+  }
+}

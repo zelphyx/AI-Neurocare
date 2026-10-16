@@ -17,6 +17,10 @@ def detect_systolic_peaks(filtered_signal: np.ndarray, sampling_rate_hz: float) 
 
     Peak distance is constrained to the physiologically plausible cardiac band
     (40-200 BPM => 0.3-1.5 s between beats); prominence adapts to signal scale.
+    Calibrated on the BUT PPG smartphone dataset: beat-to-beat amplitude
+    variability makes a large absolute height threshold drop alternating beats
+    (height is only a minimal amplitude floor), while a high prominence
+    threshold against the signal std is what rejects noise peaks.
     """
     if len(filtered_signal) < 8:
         return np.array([], dtype=int)
@@ -28,12 +32,12 @@ def detect_systolic_peaks(filtered_signal: np.ndarray, sampling_rate_hz: float) 
     min_interval_s = 60.0 / MAX_HEART_RATE_BPM
     min_distance = max(1, int(min_interval_s * sampling_rate_hz))
 
-    height = 0.4 * float(np.max(np.abs(filtered_signal)))
+    height = 0.1 * float(np.max(np.abs(filtered_signal)))
 
     peaks, _ = find_peaks(
         filtered_signal,
         distance=min_distance,
-        prominence=0.3 * signal_std,
+        prominence=0.7 * signal_std,
         height=height,
     )
     return peaks

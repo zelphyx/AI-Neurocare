@@ -167,18 +167,31 @@ const PROHIBITED_DIAGNOSTIC_PATTERNS = [
   /\b(?:anda|pasien)\s+(?:positif\s+(?:terkena|mengidap)|menderita|mengidap|terdiagnosa|divonis)\b/i,
   /\b(?:vonis\s+(?:anda|medis)|diagnosis\s+pasti|mendiagnosis\s+anda)\b/i,
   /\b(?:divonis\s+sakit|divonis\s+menderita)\b/i,
+  // English cross-language diagnostic attacks
+  /\b(?:you|the patient)\s+(?:are\s+)?(?:definitely\s+)?(?:suffering\s+from|has|have|is\s+diagnosed\s+with)\b/i,
+  /\b(?:this\s+means\s+(?:you|the\s+patient)\s+(?:have|has))\b/i,
+  /\bdiagnosis:\s/i,
 ];
 
 const PROHIBITED_DRUG_NAMES = [
-  /\b(?:amlodipin|captopril|lisinopril|ramipril|losartan|valsartan|bisoprolol|atenolol|metoprolol|furosemide|spironolactone)\b/i,
-  /\b(?:metformin|glibenclamid|glimepirid|insulin|acarbose|pioglitazone)\b/i,
+  /\b(?:amlodipin|amlodipine|captopril|lisinopril|ramipril|losartan|valsartan|bisoprolol|atenolol|metoprolol|furosemide|furosemida|spironolactone)\b/i,
+  /\b(?:metformin|metformina|glibenclamid|glimepirid|insulin|acarbose|pioglitazone)\b/i,
   /\b(?:simvastatin|atorvastatin|rosuvastatin|gemfibrozil|fenofibrat)\b/i,
   /\b(?:aspilet|aspirin|clopidogrel|warfarin)\b/i,
 ];
 
 const PROHIBITED_DOSING_PATTERNS = [
   /\b\d+\s*(?:mg|miligram|mcg|tablet|kapsul|ampul)\b/i,
-  /\b(?:resep\s+dokter\s+untuk\s+obat|minumlah\s+obat|dosis\s+obat)\b/i,
+  /\b(?:resep\s+dokter\s+untuk\s+obat|minumlah\s+obat|dosis\s+obat|minum\s+obat\s+resep)\b/i,
+];
+
+// Prohibited cure/recovery claims — the system must never declare a cure
+const PROHIBITED_CURE_PATTERNS = [
+  /\b(?:akan\s+|terbukti\s+)?sembuh(?:\s+total|\s+sepenuhnya|\s+dari)?\b/i,
+  /\bmenyembuhkan\b/i,
+  /\bpulih\s+sepenuhnya\b/i,
+  /\b cured?\b/i,
+  /\bfully\s+recover(?:ed|y)\b/i,
 ];
 
 const MANDATORY_DISCLAIMER_KEYWORDS = [
@@ -274,7 +287,7 @@ export function validateGroundedClinicalContent(
   // 5. Anti-Hallucination on Missing Gaps
   if (context.hasActiveGaps) {
     const claimsUnmeasuredNormal =
-      /(?:gula\s+darah\s+(?:anda\s+)?(?:normal|aman|terkendali)|kolesterol\s+(?:anda\s+)?(?:normal|aman|rendah))/i.exec(
+      /(?:gula\s+darah\s+(?:anda\s+)?(?:normal|aman|terkendali)|kolesterol\s+(?:anda\s+)?(?:normal|aman|rendah)|blood\s+sugar\s+(?:is\s+)?(?:normal|fine|completely\s+normal)|(?:gula\s+darah|kolesterol)[^.!?]*?(?:kadarnya\s+)?(?:rendah|normal|aman|terkendali)\b)/i.exec(
         allTexts
       );
     if (claimsUnmeasuredNormal) {
@@ -284,6 +297,20 @@ export function validateGroundedClinicalContent(
           'Model menyimpulkan status normal/aman untuk parameter skrining yang masih memiliki kesenjangan aktif.',
         matchedText: claimsUnmeasuredNormal[0],
       });
+    }
+  }
+
+  // 5b. Cure Claims — the assistant must never declare or promise a cure
+  for (const pattern of PROHIBITED_CURE_PATTERNS) {
+    const match = pattern.exec(allTexts);
+    if (match) {
+      violations.push({
+        code: 'GUARDRAIL_PROHIBITED_CURE_CLAIM',
+        message:
+          'Ditemukan klaim kesembuhan (cure claim) yang dilarang — pemulihan hanya dapat dinyatakan oleh tenaga medis.',
+        matchedText: match[0],
+      });
+      break;
     }
   }
 

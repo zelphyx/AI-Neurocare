@@ -3,12 +3,15 @@ import { detectScreeningGaps } from '../modules/gap-detection/engine.js';
 import { generateHealthInsight } from '../modules/insights/engine.js';
 import { evaluateWeeklyRecovery } from '../modules/recovery/engine.js';
 import { evaluateRehabSession } from '../modules/rehab/session-evaluator.js';
+import { evaluatePoseSession } from '../modules/rehab/landmark-bridge.js';
 import { UpstreamServiceError } from '../shared/errors/domain-error.js';
 
 export interface GatewayRequestContext {
   method: 'GET' | 'POST';
   path: string;
   body: unknown;
+  /** Lowercased header names; used by the optional API-key middleware. */
+  headers?: Record<string, string | string[] | undefined>;
 }
 
 export type RouteHandler = (
@@ -47,6 +50,10 @@ export const API_ROUTES: Record<string, RouteDefinition> = {
   '/api/v1/rehab/session/evaluate': {
     method: 'POST',
     handler: (body) => evaluateRehabSession(body) as unknown as Record<string, unknown>,
+  },
+  '/api/v1/rehab/pose/evaluate': {
+    method: 'POST',
+    handler: (body) => evaluatePoseSession(body),
   },
   '/api/v1/biomarkers/ppg/process': {
     method: 'POST',

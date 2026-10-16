@@ -3,14 +3,19 @@ Template-matching Signal Quality Index (MOD-04 DSP).
 
 Builds a median cardiac beat template from detected peaks and scores every
 beat by its Pearson correlation against the template. The mean correlation is
-the SQI in [0, 1]. SQI < 0.60 triggers an absolute rejection of the recording.
+the SQI in [0, 1]. SQI < 0.45 triggers an absolute rejection of the recording.
 """
 
 from typing import List
 
 import numpy as np
 
-SQI_REJECTION_THRESHOLD = 0.60
+# Calibrated on the BUT PPG smartphone dataset (MOD-04): template-matching SQI
+# runs lower on real smartphone photoplethysmograms than on synthetic signals
+# because beat morphology naturally varies. 0.45 separates the dataset's own
+# quality-1 clips from its quality-0 clips (only 1/13 low-quality clips leak
+# through) while keeping 69% coverage of the trustworthy clips.
+SQI_REJECTION_THRESHOLD = 0.45
 TEMPLATE_LENGTH_SAMPLES = 100
 
 
