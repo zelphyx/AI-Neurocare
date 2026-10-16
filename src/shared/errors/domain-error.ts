@@ -172,7 +172,9 @@ export class ValidationError extends DomainError {
   ): ValidationError {
     const invalidParams: InvalidParam[] = zodError.issues.map((issue) => {
       const param: InvalidParam = {
-        field: issue.path.join('.'),
+        // Root-level Zod issues carry an empty path; RFC 7807 requires a
+        // non-empty field, so fall back to the request body pointer.
+        field: issue.path.length > 0 ? issue.path.join('.') : 'body',
         reason: issue.message,
       };
       return param;
