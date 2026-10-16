@@ -10,10 +10,15 @@ services:
       GATEWAY_PORT: "8080"
       # Auth: comma-separated API keys. Leave unset for open dev mode.
       GATEWAY_API_KEYS: "${GATEWAY_API_KEYS:-}"
+      CORS_ORIGINS: "${CORS_ORIGINS:-}"
       # LLM provider (OpenAI-compatible). Unset => deterministic fallback.
-      LLM_API_BASE_URL: "${LLM_API_BASE_URL:-}"
-      LLM_API_KEY: "${LLM_API_KEY:-}"
-      LLM_MODEL: "${LLM_MODEL:-}"
+      # Both naming families supported: LLM_* (canonical) and AI_* (aliases).
+      LLM_API_BASE_URL: "${LLM_API_BASE_URL:-${AI_API_BASE_URL:-}}"
+      LLM_API_KEY: "${LLM_API_KEY:-${AI_API_KEY:-}}"
+      LLM_MODEL: "${LLM_MODEL:-${AI_MODEL:-}}"
+      LLM_TIMEOUT_MS: "${LLM_TIMEOUT_MS:-}"
+      LLM_REASONING_EFFORT: "${LLM_REASONING_EFFORT:-${AI_REASONING_EFFORT:-}}"
+      AI_TIMEOUT_SECONDS: "${AI_TIMEOUT_SECONDS:-}"
       # PPG microservice (service-to-service, internal network)
       PPG_ENGINE_BASE_URL: "http://ppg-engine:8001"
     depends_on:
